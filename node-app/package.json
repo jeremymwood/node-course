@@ -1,15 +1,15 @@
 {
-  "name": "npm-demo",
+  "name": "app",
   "version": "1.0.0",
   "description": "",
-  "main": "npm-demo/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "mongoose": "^7.1.1",
-    "underscore": "^1.4.0"
+    "lion-lib8765309": "^1.0.0"
   }
 }
