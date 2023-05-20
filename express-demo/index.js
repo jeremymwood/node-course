@@ -1,10 +1,14 @@
 
 const Joi = require('joi');
+const logger = require('./logger');
+const authenticator = require('./authenticator');
 const express = require('express');
-const {func} = require("joi");
+// const {func} = require("joi");
 const app = express();
 
 app.use(express.json());
+app.use(logger);
+app.use(authenticator);
 
 const courses = [
     { id: 1, name: 'course 1' },
