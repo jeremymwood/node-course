@@ -1,4 +1,10 @@
 
+const config = require('config');
+const morgan = require('morgan');
+const helmet = require('helmet');
+// import express from "express";
+// import helmet from "helmet";
+
 const Joi = require('joi');
 const logger = require('./logger');
 const authenticator = require('./authenticator');
@@ -7,6 +13,21 @@ const express = require('express');
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+app.use(express.static('public'));
+app.use(helmet());
+
+//config
+console.log(`Application name: ${config.get('name')}`);
+console.log(`Mail server: ${config.get('mail.host')}`);
+console.log(`Mail password: ${config.get('mail.password')}`);
+
+if (app.get('env') === 'development') {
+    app.use(morgan('tiny'));
+    console.log('Morgan enabled...');
+}
+app.use(morgan('tiny'));
+
 app.use(logger);
 app.use(authenticator);
 
