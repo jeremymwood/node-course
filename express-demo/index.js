@@ -1,6 +1,7 @@
 
 const Joi = require('joi');
 const express = require('express');
+const {func} = require("joi");
 const app = express();
 
 app.use(express.json());
@@ -20,15 +21,9 @@ res.send(courses);
 });
 
 app.post('/api/courses', (req, res) => {
-    const schema = Joi.object({
-        name: Joi.string().min(3).required()
-    });
-
-    const result = schema.validate(req.body);
-    console.log(result);
-
-    if (result.error) {
-        res.status(400).send(result.error.details[0].message);
+    const { error } = validateCourse(req.body);
+    if (error) {
+        res.status(400).send(error.details[0].message);
         return;
     }
 
@@ -40,8 +35,30 @@ app.post('/api/courses', (req, res) => {
     res.send(course);
 });
 
+app.put('/api/courses/:id', (req, res) => {
+    const course = courses.find(c => c.id === parseInt(req.params.id));
+    if (!course) res.status(404).send(`Course not found`);
+
+    const { error } = validateCourse(req.body);
+    if (error) {
+        res.status(400).send(error.details[0].message);
+        return;
+    }
+
+    course.name = req.body.name;
+    res.send(course);
+});
+
+function validateCourse(course) {
+    const schema = Joi.object({
+        name: Joi.string().min(3).required()
+    });
+
+    return schema.validate(course);
+}
+
 app.get('/api/courses/:id', (req, res) => {
-    let course = courses.find(c => c.id === parseInt(req.params.id));
+    const course = courses.find(c => c.id === parseInt(req.params.id));
     if (!course) res.status(404).send(`Course not found`);
     res.send(course);
 
