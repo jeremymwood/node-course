@@ -46,6 +46,12 @@ router.delete('/:id', (req, res) => {
     res.send(course);
 });
 
+router.get('/:id', (req, res) => {
+    const course = courses.find(c => c.id === parseInt(req.params.id));
+    if (!course) return res.status(404).send(`Course not found`);
+    res.send(course);
+});
+
 function validateCourse(course) {
     const schema = Joi.object({
         name: Joi.string().min(3).required()
@@ -53,11 +59,5 @@ function validateCourse(course) {
 
     return schema.validate(course);
 }
-
-router.get('/api/:id', (req, res) => {
-    const course = courses.find(c => c.id === parseInt(req.params.id));
-    if (!course) return res.status(404).send(`Course not found`);
-    res.send(course);
-});
 
 module.exports = router;
