@@ -1,4 +1,6 @@
 
+const debug = require('debug')('app:startup');
+// const dbDebugger = require('debug')('app:db');
 const config = require('config');
 const morgan = require('morgan');
 const helmet = require('helmet');
@@ -12,20 +14,27 @@ const express = require('express');
 // const {func} = require("joi");
 const app = express();
 
+app.set('view engine', 'pug');
+app.set('views', './views');
+
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('public'));
 app.use(helmet());
 
 //config
-console.log(`Application name: ${config.get('name')}`);
-console.log(`Mail server: ${config.get('mail.host')}`);
-console.log(`Mail password: ${config.get('mail.password')}`);
+// console.log(`Application name: ${config.get('name')}`);
+// console.log(`Mail server: ${config.get('mail.host')}`);
+// console.log(`Mail password: ${config.get('mail.password')}`);
 
 if (app.get('env') === 'development') {
     app.use(morgan('tiny'));
-    console.log('Morgan enabled...');
+    debug('Morgan enabled...');
 }
+
+// dbDebugger('Connected to the database...');
+
 app.use(morgan('tiny'));
 
 app.use(logger);
@@ -38,7 +47,7 @@ const courses = [
 ];
 
 app.get('/', (req, res) => {
-    res.send('Hello world!!!!!');
+    res.render('index', { title: 'My Express App', message: 'Hello'});
 });
 
 app.get('/api/courses', (req, res) => {
