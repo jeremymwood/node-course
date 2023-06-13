@@ -31,20 +31,18 @@ async function createCourse() {
 // createCourse();
 
 async function getCourses() {
+    const pageNumber = 2;
+    const pageSize = 10;
+
     const courses = await Course
-        // .find({ author: 'Jeremy', isPublished: true })
-        //begins
-        .find({author: /^Jeremy/})
-
-        //ends
-        .find({author: /Wood$/i})
-
-        .find({author: /.*Wood.*/})
-
-        .limit(10)
+        .find({ author: 'Jeremy', isPublished: true })
+        .skip((pageNumber - 1) * pageSize)
+        .limit(pageSize)
         .sort({name: 1})
         .select({name: 1, tags: 1});
+        // .count()
     console.log(courses);
+
 }
 
 getCourses();
