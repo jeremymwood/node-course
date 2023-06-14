@@ -53,7 +53,7 @@ async function updateCourse(id) {
     if (!course) return;
 
     course.isPublished = true;
-    course.author = 'Another Author';
+    course.author = 'Yet Another Author...';
 
     const result = await course.save()
     console.log(result);
