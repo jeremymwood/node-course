@@ -44,18 +44,22 @@ async function getCourses() {
     console.log(courses);
 
 }
-
 // getCourses();
 
-
 async function updateCourse(id) {
-    const course = await Course.findById(id);
-    if (!course) return;
-
-    course.isPublished = true;
-    course.author = 'Yet Another Author...';
-
-    const result = await course.save()
+    const result = await Course.updateOne({ _id: id }, {
+        $set: {
+            author: 'Jeremy Wood',
+            isPublished: false
+        }
+    });
     console.log(result);
 }
-updateCourse('647e525eec634ae63c750cb7');
+// updateCourse('647e525eec634ae63c750cb7');
+
+async function removeCourse(id) {
+    // const result = await Course.deleteOne({ _id: id});
+    const course = await Course.findByIdAndRemove(id);
+    console.log(course);
+}
+removeCourse('647e525eec634ae63c750cb7');
